@@ -1,0 +1,27 @@
+/* 已有方法 */
+public class Solution {
+    public String reverseString(String s) {
+        if(s == null) return null;
+        return new StringBuilder(s).reverse().toString();
+    }
+}
+
+/* 逐字反序 */
+public class Solution {
+    public String reverseString(String s) {
+    	char[] cs = s.toCharArray();
+    	swap(cs);
+        return new StringBuilder().append(cs).toString();
+    }
+
+    private void swap(char[] list) {
+    	if(list == null) return;
+    	int s = 0, e = list.length - 1;
+    	char tmp;
+    	while(s < e) {
+    		tmp = list[s];
+    		list[s++] = list[e];
+    		list[e--] = tmp;
+    	}
+    }
+}

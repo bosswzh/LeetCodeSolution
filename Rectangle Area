@@ -1,0 +1,14 @@
+/* 也可用Math.min */
+public class Solution {
+    public int computeArea(int A, int B, int C, int D, int E, int F, int G, int H) {
+        int h0, h1, v0, v1, s;
+        int area = (C-A)*(D-B) + (G-E)*(H-F);
+        if(E>C || G<A || F>D || H<B) return area;
+	    v0 = C > G ? G : C;
+	    h0 = D > H ? H : D;
+	    v1 = A > E ? A : E;
+	    h1 = B > F ? B : F;
+	    s = (v0-v1)*(h0-h1);
+	    return area - s;
+    }
+}

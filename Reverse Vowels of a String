@@ -1,0 +1,26 @@
+/* 寻找反序 */
+public class Solution {
+    public String reverseVowels(String s) {
+    	char[] cs = s.toCharArray();
+    	swapV(cs);
+        return new StringBuilder().append(cs).toString();
+    }
+
+    private void swapV(char[] list) {
+    	if(list == null) return;
+    	int s = 0, e = list.length - 1;
+    	char tmp;
+        while(true) {
+            while(s < e && list[s] != 'a' && list[s] != 'e' && list[s] != 'i' && list[s] != 'o' && list[s] != 'u' && list[s] != 'A' && list[s] != 'E' && list[s] != 'I' && list[s] != 'O' && list[s] != 'U') ++s;
+            while(s < e && list[e] != 'a' && list[e] != 'e' && list[e] != 'i' && list[e] != 'o' && list[e] != 'u' && list[e] != 'A' && list[e] != 'E' && list[e] != 'I' && list[e] != 'O' && list[e] != 'U') --e;
+
+            if(s >= e) break;
+
+    		tmp = list[s];
+    		list[s] = list[e];
+    		list[e] = tmp;
+            ++s;
+            --e;
+    	}
+    }
+}
