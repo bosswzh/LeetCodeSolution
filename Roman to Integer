@@ -1,0 +1,25 @@
+public class Solution {
+    public int romanToInt(String s) {
+        int[] valueMap = new int[26];
+		valueMap['I' - 'A'] = 1;
+        valueMap['V' - 'A'] = 5;
+        valueMap['X' - 'A'] = 10;
+        valueMap['L' - 'A'] = 50;
+        valueMap['C' - 'A'] = 100;
+        valueMap['D' - 'A'] = 500;
+        valueMap['M' - 'A'] = 1000;
+
+        char[] c = s.toCharArray();
+        int sum = 0, fir = valueMap[c[0] - 'A'], sec;
+        for(int i=1; i<c.length; i++) {
+        	sec = valueMap[c[i] - 'A'];
+        	if(fir < sec)
+        		sum -= fir;
+        	else 
+        		sum += fir;
+        	fir = sec;
+        }
+        sum += fir;
+        return sum;
+    }
+}

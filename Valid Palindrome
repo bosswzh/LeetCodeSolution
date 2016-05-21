@@ -1,0 +1,32 @@
+/* 内置转换 */
+public class Solution {
+    public boolean isPalindrome(String s) {
+		char[] ch = s.replaceAll("[^A-Za-z0-9]","").toLowerCase().toCharArray();
+		int b = 0, e = ch.length - 1;
+		while(b < e) {
+			if(ch[b++] != ch[e--])
+				return false;
+		}
+		return true;
+    }
+}
+
+/* 不转换 */
+public class Solution {
+    public boolean isPalindrome(String s) {
+    	int b = 0, e = s.length() - 1;
+    	while(b < e) {
+    		if(!Character.isLetterOrDigit(s.charAt(b))) {
+    			++b; continue;
+    		}
+    		if(!Character.isLetterOrDigit(s.charAt(e))) {
+    			--e; continue;
+    		}
+    		if(Character.toLowerCase(s.charAt(b)) != Character.toLowerCase(s.charAt(e))) {
+    			return false;
+    		}
+    		++b; --e;
+    	}
+    	return true;
+    }
+}
