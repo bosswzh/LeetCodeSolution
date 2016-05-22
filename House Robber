@@ -1,0 +1,33 @@
+public class Solution {
+    public int rob(int[] nums) {
+    	if(nums.length == 0) return 0;
+    	else if(nums.length == 1) return nums[0];
+    	else if(nums.length == 2) return (nums[0] > nums[1]) ? nums[0] : nums[1];
+    	else {
+	    	int[] best = new int[nums.length];
+	        best[nums.length-1] = nums[nums.length-1];
+	        best[nums.length-2] = nums[nums.length-2];
+	        best[nums.length-3] = nums[nums.length-3] + nums[nums.length-1];
+	        for(int i = nums.length-4; i>=0; i--) {
+	        	best[i] = (best[i+2] > best[i+3]) ? (nums[i] + best[i+2]) : (nums[i] + best[i+3]);
+	        }
+	        return (best[0] > best[1]) ? best[0] : best[1];
+		}
+    }
+}
+
+/* 从前往后算简单些 */
+public class Solution {
+    public int rob(int[] nums) {
+    	if(nums.length == 0) return 0;
+    	else if(nums.length == 1) return nums[0];
+    	else if(nums.length == 2) return (nums[0] > nums[1]) ? nums[0] : nums[1];
+    	else {
+	    	nums[1] = (nums[0] > nums[1]) ? nums[0] : nums[1];
+	    	for(int i=2; i<nums.length; i++) {
+	    		nums[i] = (nums[i-2] + nums[i] > nums[i-1]) ? (nums[i-2] + nums[i]) : nums[i-1];
+	    	}
+		}
+		return nums[nums.length -1];
+    }
+}

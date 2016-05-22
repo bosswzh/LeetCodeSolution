@@ -1,0 +1,24 @@
+/* 使用方法 */
+public class Solution {
+    public int lengthOfLastWord(String s) {
+    	s = s.trim();
+        int length = s.length();
+        int last = s.lastIndexOf(' ');
+        return length - last - 1;
+    }
+}
+
+/* 按位处理 */
+public class Solution {
+    public int lengthOfLastWord(String s) {
+    	char[] c = s.toCharArray();
+    	int i = s.length-1, count = 0;
+    	while(i>=0 && c[i] == ' ')
+    		--i;
+    	while(i>=0 && c[i] != ' ') {
+    		++count;
+    		--i;
+    	}
+    	return count;
+    }
+}
