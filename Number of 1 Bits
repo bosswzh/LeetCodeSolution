@@ -1,0 +1,16 @@
+public class Solution {
+    // you need to treat n as an unsigned value
+    public int hammingWeight(int n) {
+    	int w = 0;
+    	int c = 1;
+        for(int i=0; i<32; i++) {
+        	if((n & c) != 0)
+        		++w;
+        	c = c << 1;
+        }
+        return w;
+    }
+}
+
+/* 其他 */
+n &= n-1;
