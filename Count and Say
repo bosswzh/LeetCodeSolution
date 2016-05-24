@@ -1,0 +1,30 @@
+public class Solution {
+    public String countAndSay(int n) {
+    	String s = "1";
+        for(int i=0; i<n-1; i++)
+        	s = nextSeq(s);
+        return s;
+    }
+
+    private String nextSeq(String pre) {
+    	char[] c = pre.toCharArray();
+    	StringBuilder sb = new StringBuilder();
+    	char num = c[0];
+    	int count = 1;
+    	for(int i=1; i<c.length; i++) {
+    		if(c[i] == num)
+    			++count;
+    		else {
+    			sb.append(count);
+    			sb.append(num);
+    			count = 1;
+    			num = c[i];
+    		}
+    	}
+    	sb.append(count);
+    	sb.append(num);
+    	return sb.toString();
+    }
+}
+
+ /* 其实包含递归感觉 */

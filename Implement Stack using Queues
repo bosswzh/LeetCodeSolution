@@ -1,0 +1,93 @@
+class MyStack {
+    Queue<Integer> q1 = new LinkedList<Integer>(), q2 = new LinkedList<Integer>();
+    boolean use1 = true;
+
+    // Push element x onto stack.
+    public void push(int x) {
+        Queue<Integer> tq;
+        if(use1)
+            tq = q1;
+        else
+            tq = q2; 
+        tq.offer(x);   
+    }
+
+    // Removes the element on top of the stack.
+    public void pop() {
+        Queue<Integer> tq1, tq2;
+        if(use1) {
+            tq1 = q1;
+            tq2 = q2;
+        }
+        else {
+            tq1 = q2; 
+            tq2 = q1;
+        }
+
+        while(tq1.size() != 1)
+            tq2.offer(tq1.poll());
+        tq1.poll();
+        use1 = !use1;
+    }
+
+    // Get the top element.
+    public int top() {
+        Queue<Integer> tq1, tq2;
+        if(use1) {
+            tq1 = q1;
+            tq2 = q2;
+        }
+        else {
+            tq1 = q2; 
+            tq2 = q1;
+        }
+
+        while(tq1.size() != 1)
+            tq2.offer(tq1.poll());
+        int res = tq1.peek();
+        tq2.offer(tq1.poll());
+        use1 = !use1;
+        return res;
+    }
+
+    // Return whether the stack is empty.
+    public boolean empty() {
+        Queue<Integer> tq;
+        if(use1)
+            tq = q1;
+        else
+            tq = q2; 
+        return tq.isEmpty();
+    }
+}
+
+
+/* 思路还是要开阔些，可以用一个做的（不是本来功能咋样就只能干啥了） */
+class MyStack {
+
+    //one Queue solution
+    private Queue<Integer> q = new LinkedList<Integer>();
+
+    // Push element x onto stack.
+    public void push(int x) {
+        q.add(x);
+        for(int i = 1; i < q.size(); i ++) { //rotate the queue to make the tail be the head
+            q.add(q.poll());
+        }
+    }
+
+    // Removes the element on top of the stack.
+    public void pop() {
+        q.poll();
+    }
+
+    // Get the top element.
+    public int top() {
+        return q.peek();        
+    }
+
+    // Return whether the stack is empty.
+    public boolean empty() {
+        return q.isEmpty();
+    }
+}

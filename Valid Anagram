@@ -1,0 +1,33 @@
+public class Solution {
+    public boolean isAnagram(String s, String t) {
+        int[] count = new int[26];
+        char[] cs = s.toCharArray();
+        char[] ct = t.toCharArray();
+
+        for(int i=0; i<cs.length; i++)
+        	++count[cs[i]-'a'];
+
+        for(int i=0; i<ct.length; i++)
+        	--count[ct[i]-'a'];
+
+        for(int i=0; i<26; i++)
+        	if(count[i] != 0) return false;
+
+        return true;
+    }
+}
+
+
+/* 善用工具也是能力 */
+public class Solution {
+    public boolean isAnagram(String s, String t) {
+        if (s.length() != t.length()) {
+            return false;
+        }
+        char[] str1 = s.toCharArray();
+        char[] str2 = t.toCharArray();
+        Arrays.sort(str1);
+        Arrays.sort(str2);
+        return Arrays.equals(str1, str2);
+    }
+}

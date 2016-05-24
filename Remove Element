@@ -1,0 +1,29 @@
+public class Solution {
+    public int removeElement(int[] nums, int val) {
+        int s = 0, e = nums.length - 1;
+        while(s <= e) {
+        	while(s < nums.length && nums[s] != val)
+        		++s;
+        	while(e >=0 && nums[e] == val)
+        		--e;
+        	if(s < e) {
+	        	int tmp = nums[s];
+	        	nums[s] = nums[e];
+	        	nums[e] = tmp;
+	        }
+        }
+        return s;
+    }
+}
+
+/* 既然后面的不重要，也不需要维护了 */
+public class Solution {
+    public int removeElement(int[] nums, int val) {
+        int index = 0;
+        for(int i=0; i<nums.length; i++) {
+        	if(nums[i] != val)
+        		nums[index++] = nums[i];
+        }
+        return index;
+    }
+}
