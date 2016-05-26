@@ -1,0 +1,18 @@
+/* 一开始想到位操作，却没有坚持下去，只用了HashMap方法 */
+
+public class Solution {
+    public int singleNumber(int[] nums) {
+        int[] count = new int[32];
+        for(int i = 0; i<nums.length; i++) {
+        	for(int j=0; j<32; j++) {
+        		if(((nums[i] >>> j) & 1) != 0) 
+        			count[j]++;
+        	}
+        }
+        int res = 0;
+        for(int i=0; i<32; i++) {
+        	res |= ((count[i] % 3) << i);
+        }
+        return res;
+    }
+}

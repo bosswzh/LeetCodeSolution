@@ -1,0 +1,15 @@
+/* 边界条件想清楚最直接的问题是什么，别紧张 */
+public class Solution {
+    public int searchInsert(int[] nums, int target) {
+        int s=0, e=nums.length -1;
+        int mid;
+        while(s < e) {
+        	mid = (s+e) / 2;
+        	if(nums[mid] == target) return mid;
+        	if(nums[mid] < target) s = mid+1;
+        	else e=mid-1;
+        }
+        if(nums[s] < target) return s+1;
+        return s;
+    }
+}
