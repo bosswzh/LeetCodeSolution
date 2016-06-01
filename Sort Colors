@@ -1,0 +1,57 @@
+public class Solution {
+    public void sortColors(int[] nums) {
+        int cr=0, cw=0, cb=0;
+        for(int i=0; i<nums.length; i++) {
+        	if(nums[i]==0) ++cr;
+        	else if(nums[i]==1) ++cw;
+        	else if(nums[i]==2) ++cb;
+        }
+        cw += cr;
+        cb += cw;
+        int r=0, w=cr, b=cw;
+        while(r<cr) {
+        	if(nums[r]==0) ++r;
+        	else if(nums[r]==1) {
+        	    swap(nums, r, w);
+        	    ++w;
+        	}
+        	else {
+        	    swap(nums, r, b);
+        	    ++b;
+        	}
+        }
+        while(w<cw) {
+        	if(nums[w]==1) ++w;
+        	else {
+        	    swap(nums, w, b);
+        	    ++b;
+        	}
+        }
+    }
+
+    private void swap(int[] nums, int p1, int p2) {
+    	nums[p1] = (nums[p1] ^ nums[p2]);
+    	nums[p2] = (nums[p1] ^ nums[p2]);
+    	nums[p1] = (nums[p1] ^ nums[p2]);
+    }
+}
+
+/* 简洁注意边界 */
+public void sortColors(int[] nums) {
+    int startIndex = 0;
+    int endIndex = nums.length - 1;
+    int temp,i=0;
+    while(i <= endIndex) {
+        if (nums[i] == 0) {
+            temp = nums[i];
+            nums[i] = nums[startIndex];
+            nums[startIndex++] = temp;
+            ++i;
+        } else if (nums[i] == 2) {
+            temp = nums[i];
+            nums[i] = nums[endIndex];
+            nums[endIndex--] = temp;
+        } 
+        else ++i;
+    }
+}

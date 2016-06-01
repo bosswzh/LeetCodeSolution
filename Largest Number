@@ -1,0 +1,106 @@
+public class Solution {
+    public String largestNumber(int[] nums) {
+    	qsort(nums, 0, nums.length-1);
+        StringBuilder sb = new StringBuilder();
+        for(int i=nums.length-1; i>=0; i--)
+        	sb.append(nums[i]);
+        return sb.charAt(0) == '0' ? "0" : sb.toString();
+    }
+
+    private void qsort(int[] nums, int s, int e) {
+		if(s >= e) return;
+		int pivot = nums[0];
+		int i=s-1, j=e+1;
+		while(true) {
+			do {++i;} while(gt(pivot, nums[i]));
+			do {--j;} while(gt(nums[j], pivot));
+			if(i>=j) {
+				qsort(nums, s, j);
+				qsort(nums,j+1, e);
+				return;
+			}
+			swap(nums, i, j);
+		}
+    }
+
+    private void swap(int[] nums, int a, int b) {
+    	if(a == b) return;
+    	int tmp = nums[a];
+    	nums[a] = nums[b];
+    	nums[b] = tmp;
+    }
+
+    private boolean gt(int i1, int i2) {
+    	String s1 = String.valueOf(i1) + i2;
+    	String s2 = String.valueOf(i2) + i1;
+    	return s1.compareTo(s2) > 0;
+    }
+}
+
+/* simpler logic */
+public String largestNumber(int[] nums) {
+        boolean allZero = true;
+        for(int i=0; i<nums.length; i++) {
+            if(nums[i] != 0) allZero = false;
+        }
+        if(allZero) return "0";
+        qsort(nums, 0, nums.length-1);
+        StringBuilder sb = new StringBuilder();
+        for(int i=nums.length-1; i>=0; i--)
+            sb.append(nums[i]);
+        return sb.toString();
+    }
+
+    private void qsort(int[] nums, int s, int e) {
+        if(s >= e) return;
+        int pivot = nums[e];
+        int a = s, tmp;
+        for(int i=s; i<e; i++) {
+            if(gt(pivot, nums[i]))
+                swap(nums, i, a++);
+        }
+        swap(nums, e, a);
+
+        qsort(nums, s, a-1);
+        qsort(nums, a+1, e);
+    }
+
+    private void swap(int[] nums, int a, int b) {
+        if(a == b) return;
+        int tmp = nums[a];
+        nums[a] = nums[b];
+        nums[b] = tmp;
+    }
+
+    private boolean gt(int i1, int i2) {
+        char[] c1 = ("" + i1 + i2).toCharArray();
+        char[] c2 = ("" + i2 + i1).toCharArray();
+        for(int i=0; i<c1.length; i++)
+            if(c1[i] > c2[i]) return true;
+            else if(c1[i] < c2[i]) return false;
+        return true;
+    }
+
+    /* 比较时用数字应该会快些 */
+
+    public String largestNumber(int[] nums) {
+        if (nums == null || nums.length == 0) return "";
+        String[] strs = new String[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            strs[i] = nums[i]+"";
+        }
+        Arrays.sort(strs, new Comparator<String>() {
+            @Override
+            public int compare(String i, String j) {
+                String s1 = i+j;
+                String s2 = j+i;
+                return s1.compareTo(s2);
+            }
+        });
+        if (strs[strs.length-1].charAt(0) == '0') return "0";
+        String res = new String();
+        for (int i = 0; i < strs.length; i++) {
+            res = strs[i]+res;
+        }
+        return res;
+    }

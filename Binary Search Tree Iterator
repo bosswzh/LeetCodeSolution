@@ -1,0 +1,140 @@
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+
+public class BSTIterator {
+	Stack<TreeNode> stack = new Stack<TreeNode>();
+	TreeNode cur, next;
+
+    public BSTIterator(TreeNode root) {
+        next = root;
+        while(next != null) {
+    		stack.push(next);
+	        next = next.left;
+    	}
+    	if(!stack.empty()) 
+    		next = stack.pop();
+    }
+
+    /** @return whether we have a next smallest number */
+    public boolean hasNext() {
+    	if(next != null) return true;
+    	if(cur == null) return false;
+    	next = cur.right;
+        while(next != null) {
+    		stack.push(next);
+	        next = next.left;
+    	}
+    	if(stack.empty()) return false;
+    	next = stack.pop();
+    	return true;
+    }
+
+    /** @return the next smallest number */
+    public int next() {
+    	if(next != null) {
+    		cur = next;
+    		next = null;
+    	}
+    	else {
+	    	cur = cur.right;
+	        while(cur != null) {
+	    		stack.push(cur);
+		        cur = cur.left;
+	    	}
+	    	cur = stack.pop();
+    	}
+    	return cur.val;
+    }
+}
+
+/* 压左树的神奇简单代码 */
+
+private Stack<TreeNode> stack;
+public BSTIterator(TreeNode root) {
+    stack = new Stack<>();
+    pushLeft(root);
+}
+
+/** @return whether we have a next smallest number */
+public boolean hasNext() {
+    return !stack.isEmpty();
+}
+
+private void pushLeft(TreeNode node) {
+    while (node != null) {
+        stack.push(node);
+        node = node.left;
+    }
+}
+/** @return the next smallest number */
+public int next() {
+    TreeNode node = stack.pop();
+    pushLeft(node.right);
+    return node.val;
+}
+
+/* 这个就更厉害啦 */
+
+public class BSTIterator {
+
+    private TreeNode current;
+
+    public BSTIterator(TreeNode root) {
+        current = threadAllNodesOnLeftMostBranch(root);
+    }
+
+    /** @return whether we have a next smallest number */
+    public boolean hasNext() {
+        return current != null;
+    }
+
+    /** @return the next smallest number */
+    public int next() {
+        int result = current.val;
+
+        current = current.right;
+        // If thread(current) returns false, it means that the left sub tree of current is visited.
+        // So there's no need to call threadAllNodesOnLeftMostBranch on current.
+        if (current != null && current.left != null && thread(current)) {
+            // current is already threaded in the if statement, skip it.
+            current = current.left;
+            current = threadAllNodesOnLeftMostBranch(current);
+        }
+
+        return result;
+    }
+
+    // Thread all nodes on TreeNode root's left-most branch until it reaches the last node on the branch,
+    // and return the last node
+    private TreeNode threadAllNodesOnLeftMostBranch(TreeNode root) {
+        while (root != null && root.left != null) {
+               thread(root);
+               root = root.left;
+        }
+
+        return root;
+    }
+
+    // Thread or unthread TreeNode root with its successor
+    // Return true if the operation turns out as a threading, and false if unthreading.
+    private boolean thread(TreeNode root) {
+        TreeNode predecessor  = root.left;
+        while (predecessor.right != null && predecessor.right != root) {
+            predecessor = predecessor.right;
+        }
+        if (predecessor.right == null) {
+            predecessor.right = root;
+            return true;
+        } else {
+            predecessor.right = null;
+            return false;
+        }
+    }
+}

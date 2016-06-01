@@ -1,0 +1,15 @@
+public class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> list = new ArrayList<String>();
+        generate("", 0, n, list);
+        return list;
+    }
+
+    private void generate(String cur, int nl, int nr, List<String> list) {
+    	if(nl == 0 && nr == 0) list.add(cur);
+    	if(nl < nr) generate(cur+"(", nl+1, nr, list);
+    	if(nl > 0) generate(cur+")", nl-1, nr-1, list);
+    }
+}
+
+/* 从()出发，每次往上次中间之后的空隙加()也是答案吧 */

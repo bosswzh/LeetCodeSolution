@@ -1,0 +1,16 @@
+public class Solution {
+    public int uniquePaths(int m, int n) {
+        int[][] table = new int[m][n];
+        return uniquePaths(m, n, table);
+    }
+
+    private int uniquePaths(int m, int n, int[][] table) {
+    	if(table[m-1][n-1] == 0) {
+    		if(m <= 1 || n <= 1) table[m-1][n-1] = 1;
+    		else table[m-1][n-1] = uniquePaths(m, n-1, table) + uniquePaths(m-1, n, table);
+    	}
+        return table[m-1][n-1];
+    }
+}
+
+/* 可看做组合数m+n选m 直接用BigInteger算 */

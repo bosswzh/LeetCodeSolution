@@ -1,0 +1,121 @@
+public class Solution {
+	public boolean wordB(String s, Set<String> wordDict) {
+        boolean[] visited = new boolean[s.length()];
+        return wordB(s, wordDict, 0, visited);
+    }
+
+    private boolean wordB(String s, Set<String> wordDict, int start, boolean[] visited) {
+    	if(visited[start]) return false;
+    	visited[start] = true;
+        for(int i=start+1; i<=s.length(); i++) {
+        	if(wordDict.contains(s.substring(start, i)))
+        		if(i == s.length() || wordB(s, wordDict, i, visited))
+        			return true;
+        }
+        return false;
+    }
+
+    public List<String> wordBreak(String s, Set<String> wordDict) {
+    	if(s.length() < 1) return new ArrayList<String>();
+    	if(!wordB(s, wordDict)) return new ArrayList<String>();
+
+        List<String>[] slo = (List<String>[]) new ArrayList[s.length()+1];
+        slo[0] = new ArrayList<String>();
+        int max = getMax(wordDict);
+        for(int i=0; i<slo.length; i++) {
+        	if(slo[i] != null) {
+        		for(int j=i+1; j<slo.length && j<=i+max+1; j++) {
+        			if(wordDict.contains(s.substring(i,j)))
+        				addWord(slo, i, j, s.substring(i,j));
+        		}
+        	}
+        }
+        return slo[s.length()];
+    }
+
+    private void addWord(List<String>[] slo, int from, int to, String frag) {
+        if(slo[from].size() == 0) {
+            if(slo[to] == null) 
+    		slo[to] = new ArrayList<String>();
+            slo[to].add(frag);
+            return;
+        }
+    	frag = " " + frag;
+    	if(slo[to] == null) 
+    		slo[to] = new ArrayList<String>();
+    	for(String c : slo[from])
+    		slo[to].add(c + frag);
+    }
+
+    private int getMax(Set<String> s) {
+    	int max = 0;
+    	for(String a : s) {
+    		max = Math.max(max, a.length());
+    	}
+    	return max;
+    }
+}
+
+
+/* 未能完全明白为何避开了超时超空间 */
+public class Solution {
+    HashMap<String,List<String>> map = new HashMap<String,List<String>>();
+    public List<String> wordBreak(String s, Set<String> wordDict) {
+        List<String> res = new ArrayList<String>();
+        if(s.isEmpty())
+            return res; // return empty list upon empty string
+
+        if(map.containsKey(s))
+            return map.get(s);
+
+        for(int i=0; i<s.length(); i++) {
+            String firstWord = s.substring(0,i+1);
+            if(wordDict.contains(firstWord)) {
+                List<String> rest = wordBreak(s.substring(i+1),wordDict);
+                if(rest.isEmpty()) {
+                    if(i==s.length()-1)
+                        res.add(firstWord);
+                } else {
+                    for(String str : rest)
+                        res.add(firstWord + " " + str);
+                }
+            }
+        }
+
+        map.put(s,res);
+
+        return res;
+    }
+}
+
+
+/* 这个快些，逻辑稍差 */
+public class Solution {
+    HashMap<Integer, List<String>> dp = new HashMap<>();
+
+    public List<String> wordBreak(String s, Set<String> wordDict) {
+        int maxLength = -1;
+        for(String ss : wordDict) maxLength = Math.max(maxLength, ss.length());
+        return addSpaces(s, wordDict, 0, maxLength);
+    }
+
+    private List<String> addSpaces(String s, Set<String> wordDict, int start, int max){
+        List<String> words = new ArrayList<>();
+        if(start == s.length()) {
+            words.add("");
+            return words;
+        }
+        for(int i = start + 1; i <= max + start && i <= s.length(); i++){
+            String temp = s.substring(start, i);
+            if(wordDict.contains(temp)){
+                List<String> ll;
+                if(dp.containsKey(i)) ll = dp.get(i);
+                else ll = addSpaces(s, wordDict, i, max);
+                for(String ss : ll) words.add(temp + (ss.equals("") ? "" : " ") + ss);
+            }
+
+        }
+        dp.put(start, words);
+        return words;
+    }
+}
