@@ -1,0 +1,56 @@
+/**
+ * Definition for binary tree with next pointer.
+ * public class TreeLinkNode {
+ *     int val;
+ *     TreeLinkNode left, right, next;
+ *     TreeLinkNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public void connect(TreeLinkNode root) {
+        if(root == null) return;
+        Queue<TreeLinkNode> queue = new ArrayDeque<TreeLinkNode>();
+        int thisRound = 0, nextRound = 1;
+        TreeLinkNode tmp;
+        queue.offer(root);
+        while(nextRound != 0) {
+        	thisRound = nextRound;
+        	nextRound = 0;
+        	while(thisRound != 0) {
+        		tmp = queue.poll();
+        		--thisRound;
+        		if(thisRound == 0)
+        			tmp.next = null;
+        		else
+        			tmp.next = queue.peek();
+        		if(tmp.left != null) {
+        			queue.offer(tmp.left);
+        			++nextRound;
+        		}
+        		if(tmp.right != null) {
+        			queue.offer(tmp.right);
+        			++nextRound;
+        		}
+        	}
+        }
+    }
+}
+
+/* 还是要读清题目，perfect binary tree */
+public class Solution {
+    public void connect(TreeLinkNode root) {
+        if(root==null) return;
+        TreeLinkNode cur = root;
+        TreeLinkNode nextLeftmost = null;
+
+        while(cur.left!=null){
+            nextLeftmost = cur.left; // save the start of next level
+            while(cur!=null){
+                cur.left.next=cur.right;
+                cur.right.next = cur.next==null? null : cur.next.left;
+                cur=cur.next;
+            }
+            cur=nextLeftmost;  // point to next level
+        }
+    }
+}

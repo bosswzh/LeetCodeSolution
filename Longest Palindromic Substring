@@ -1,0 +1,95 @@
+public class Solution {
+    public String longestPalindrome(String s) {
+        boolean isPal[][] = new boolean[s.length()][s.length()];
+        int best1 = -1, best2 = 0, pos1 = 0, pos2 = 0;
+        while(true) {
+        	int tmp = checker(s, isPal, best1+2);
+        	if(tmp < 0) break;
+        	best1 += 2;
+        	pos1 = tmp; 
+        }
+        while(true) {
+        	int tmp = checker(s, isPal, best2+2);
+        	if(tmp < 0) break;
+        	best2 += 2;
+        	pos2 = tmp;
+        }
+        if(best1 > best2) return s.substring(pos1, pos1+best1);
+        else return s.substring(pos2, pos2+best2);
+    }
+    
+    private int checker(String s, boolean[][] isPal, int l) {
+        int res = -1;
+        if(l <= 2) {
+        	for(int i=0; i<=s.length()-l; i++) {
+        		isPal[i][i+l-1] = (s.charAt(i) == s.charAt(i+l-1));
+        		if(isPal[i][i+l-1]) res = i;
+        	}
+        }
+        else{
+        	for(int i=0; i<=s.length()-l; i++) {
+        		isPal[i][i+l-1] = (isPal[i+1][i+l-2] && (s.charAt(i) == s.charAt(i+l-1)));
+        		if(isPal[i][i+l-1]) res = i;
+        	}
+        }
+        return res;
+    }
+}
+
+/* Solve by Expand around center */
+public String longestPalindrome(String s) {
+    int start = 0, end = 0;
+    for (int i = 0; i < s.length(); i++) {
+        int len1 = expandAroundCenter(s, i, i);
+        int len2 = expandAroundCenter(s, i, i + 1);
+        int len = Math.max(len1, len2);
+        if (len > end - start) {
+            start = i - (len - 1) / 2;
+            end = i + len / 2;
+        }
+    }
+    return s.substring(start, end + 1);
+}
+
+private int expandAroundCenter(String s, int left, int right) {
+    int L = left, R = right;
+    while (L >= 0 && R < s.length() && s.charAt(L) == s.charAt(R)) {
+        L--;
+        R++;
+    }
+    return R - L - 1;
+}
+
+/* Manacher's Algorithm !!!!! */
+public class Solution {
+    public String longestPalindrome(String s) {
+    	char[] seq = new char[2*s.length()+1];
+    	int[] p = new int[2*s.length()+1];
+    	seq[0] = '#';
+    	for(int i=0; i<s.length(); i++) {
+    		seq[i*2+1] = s.charAt(i);
+    		seq[i*2+2] = '#';
+    	}
+    	int id=-1, mx=-1, max=-1, maxid=-1;
+    	for(int i=0; i<p.length; i++) {
+    		p[i] = (mx > i) ? Math.min(p[id*2-i], mx-i) : 1;
+    		while(i-p[i] >= 0 && i+p[i] < p.length && seq[i-p[i]] == seq[i+p[i]])
+    			++p[i];
+    		--p[i];
+    		if(i+p[i] > mx) {
+    			id = i;
+    			mx = i+p[i];
+    		}
+    		if(mx-id > max) {
+    			maxid = id;
+    			max = mx - id;
+    		}
+    	}
+    	StringBuilder sb = new StringBuilder();
+    	for(int i=-max; i<=max; i++) {
+    		if(seq[maxid+i] != '#')
+    			sb.append(seq[maxid+i]);
+    	}
+    	return sb.toString();
+    }
+}

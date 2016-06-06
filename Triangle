@@ -1,0 +1,18 @@
+public class Solution {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        List<List<Integer>> path = new ArrayList<List<Integer>>();
+        for(int i=triangle.size()-1; i>=0; i--) {
+            List<Integer> tmp = new ArrayList<Integer>();
+            for(int j=0; j<triangle.get(i).size(); j++) {
+                if(i == triangle.size()-1)
+                    tmp.add(triangle.get(i).get(j));
+                else
+                    tmp.add(Math.min(path.get(0).get(j), path.get(0).get(j+1)) + triangle.get(i).get(j));
+            }
+            path.add(0, tmp);
+        }
+        return path.get(0).get(0);
+    }
+}
+
+/* 可用1-d space，只用上次信息 */

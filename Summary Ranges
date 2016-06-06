@@ -1,0 +1,18 @@
+public class Solution {
+    public List<String> summaryRanges(int[] nums) {
+        List<String> res = new ArrayList<String>();
+        if(nums.length == 0) return res;
+        int i = 0, s, e;
+        while(i < nums.length) {
+            s = nums[i++];
+            e = s;
+            while(i < nums.length && nums[i] == e + 1) {
+                ++e;
+                ++i;
+            }
+            if(s == e) res.add(Integer.toString(s));
+            else res.add(s + "->" + e);
+        }
+        return res;
+    }
+}

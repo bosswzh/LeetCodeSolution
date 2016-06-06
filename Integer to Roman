@@ -1,0 +1,46 @@
+public class Solution {
+    public String intToRoman(int num) {
+        int[] radix = new int[7];
+        int[] base = new int[] {1000, 500, 100, 50, 10, 5, 1};
+        char[] name = new char[] {'M','D','C','L','X','V','I'};
+        for(int i=0; i<7; i++) {
+        	radix[i] = num / base[i];
+        	num -= radix[i]*base[i];
+        }
+        StringBuffer sb = new StringBuffer();
+        boolean five = false;
+        for(int i=0; i<7; i++) {
+        	if(five) {
+        		if(radix[i] == 1) {
+        			if(radix[i+1] == 4) {
+        				sb.append('I');
+        				sb.append(name[i-1]);
+        			}
+        			else 
+        				sb.append(name[i]);
+        		}
+        	}
+        	else {
+        		if(radix[i] != 4) {
+        			for(int j=0; j<radix[i]; j++)
+        				sb.append(name[i]);
+        		}
+        		else if(radix[i-1] == 0) {
+        			sb.append('I');
+        			sb.append(name[i-1]);
+        		}
+        	}
+        	five = !five;
+        }
+        return sb.toString();
+    }
+}
+
+/* 简单办法 */
+public String intToRoman(int num) {
+    String M[] = {"", "M", "MM", "MMM"};
+    String C[] = {"", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"};
+    String X[] = {"", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"};
+    String I[] = {"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"};
+    return M[num/1000] + C[(num%1000)/100]+ X[(num%100)/10] + I[num%10];
+}

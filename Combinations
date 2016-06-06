@@ -1,0 +1,31 @@
+public class Solution {
+    List<List<Integer>>[][] pool;
+    public List<List<Integer>> combine(int n, int k) {
+        pool = (List<List<Integer>>[][]) new ArrayList[n][k];
+        return combineR(n,k);
+    }
+
+    private List<List<Integer>> combineR(int n, int k) {
+        if(n <= 0 || k <= 0 || n < k) return new ArrayList<>();
+        if(pool[n-1][k-1] == null) {
+            List<List<Integer>> list = new ArrayList<>();
+            if(n > k) {
+            	list.addAll(combineR(n-1, k));
+            	List<List<Integer>> sub = combineR(n-1,k-1);
+            	for(List<Integer> l : sub) {
+                    List<List<Integer>> new = new ArrayList<>();
+            		l.add(n);
+            		list.add(l);
+            	}
+            }
+            else {
+            	List<Integer> tmp = new ArrayList<>();
+            	for(int i=1; i<=n; i++)
+            		tmp.add(i);
+            	list.add(tmp);
+            }
+            pool[n-1][k-1] = list;
+        }
+        return pool[n-1][k-1];
+    }
+}

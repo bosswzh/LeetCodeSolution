@@ -1,0 +1,22 @@
+public class Solution {
+    public List<String> findRepeatedDnaSequences(String s) {
+    	List<String> list = new ArrayList<String>();
+    	Set<String> set = new HashSet<String>();
+    	Set<String> added = new HashSet<String>();
+    	int t = 0, e = 10;
+    	String sub;
+        if(s == null) return list;
+        while(e <= s.length()) {
+        	sub = s.substring(t,e);
+        	if(set.contains(sub))
+        		added.add(sub);
+        	else
+        		set.add(sub);
+        	++t;
+        	++e;
+        }
+        list.addAll(added);
+        return list;
+    }
+}
+/* also, could convert into value and compair (base 4) */
