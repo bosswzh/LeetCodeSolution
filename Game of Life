@@ -1,0 +1,36 @@
+public class Solution {
+    public void gameOfLife(int[][] board) {
+        if(board.length == 0 || board[0].length == 0) return;
+
+        for(int i=0; i<board.length; i++) {
+            for(int j=0; j<board[0].length; j++) {
+                int count = neighbor(board,i,j);
+                if(board[i][j] == 0) {
+                    if(count == 3) board[i][j] = -4;
+                }
+                else {
+                    if(count < 2 || count > 3) board[i][j] = -5;
+                }
+            }
+        }
+
+        for(int i=0; i<board.length; i++) {
+            for(int j=0; j<board[0].length; j++) {
+                if(board[i][j] < 0) board[i][j] += 5;
+            }
+        }
+    }
+
+    private int neighbor(int[][] b, int m, int n) {
+        int count = 0;
+        for(int i=-1; i<=1; i++) {
+            for(int j=-1; j<=1; j++) {
+                if(m+i >=0 && m+i < b.length && n+j >=0 && n+j < b[0].length && !(i == 0 && j == 0))
+                    count += (b[m+i][n+j] % 2 == 0) ? 0 : 1;
+            }
+        }
+        return count;
+    }
+}
+
+/* 可以使用2个bit来记录本次和下次 */

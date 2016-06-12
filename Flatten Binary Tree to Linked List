@@ -1,0 +1,63 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public void flatten(TreeNode root) {
+        Queue<TreeNode> q = new ArrayDeque<TreeNode>();
+        TreeNode dummy = new TreeNode(0), tmp = dummy;
+        if(root != null) q.offer(root);
+        while(!q.isEmpty()) {
+            TreeNode cur = q.poll();
+            if(cur.left != null) q.offer(cur.left);
+            if(cur.right != null) q.offer(cur.right);
+            tmp.right = cur;
+            cur.left = null;
+            tmp = cur;
+        }
+    }
+}
+
+/* 题目要求inplace，傻傻都没看 */
+public class Solution {
+    public void flatten(TreeNode root) {
+        if(root == null) return;
+        flat(root);
+    }
+
+    private TreeNode flat(TreeNode root) { // assume not null
+        TreeNode tmp = root, l = root.left, r = root.right;
+        if(l != null) {
+            tmp.left = null;
+            tmp.right = l;
+            tmp = flat(l);
+        }
+        if(r != null) {
+            tmp.left = null;
+            tmp.right = r;
+            tmp = flat(r);
+        }
+        return tmp;
+    }
+}
+
+/* 犀利依旧的morris */
+public void flatten(TreeNode root) {
+    TreeNode cur = root;
+    TreeNode prev = null;
+    while(cur != null){
+        if(cur.left == null) cur = cur.right;
+        else {
+            prev = cur.left;
+            while(prev.right != null) prev = prev.right;
+            prev.right = cur.right;
+            cur.right = cur.left;
+            cur.left = null;
+        }
+    }
+}

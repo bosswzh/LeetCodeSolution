@@ -1,0 +1,16 @@
+public class Solution {
+    public int minPatches(int[] nums, int n) {
+        long maxR = 0; // 注意越界问题
+        int index = 0, count = 0;
+        while(maxR < n) {
+            if(index < nums.length && nums[index] <= maxR + 1) {
+                maxR += nums[index++];
+            }
+            else {
+                maxR = (maxR << 1) + 1;
+                ++count;
+            }
+        }
+        return count;
+    }
+}

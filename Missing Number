@@ -1,0 +1,30 @@
+public class Solution {
+    public int missingNumber(int[] nums) {
+        int res = 0;
+        int max = 0;
+        for(int i=0; i<nums.length; i++) {
+            res ^= nums[i];
+            if(nums[i] > max) max = nums[i];
+        }
+        for(int i=0; i<=max; i++) {
+            res ^= i;
+        }
+        if(res == 0) {
+            if(max == nums.length) return 0;
+            else return max + 1;
+        }
+        return res;
+    }
+}
+
+/* */
+public class Solution {
+    public int missingNumber(int[] nums) {
+        int res = 0;
+        for(int i=0; i<nums.length; i++) {
+            res ^= nums[i];
+            res ^= i;
+        }
+        return res^nums.length;
+    }
+}
